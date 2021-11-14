@@ -128,4 +128,21 @@
         }                                                                                                                                                                     \
     }
 
+#define ct_linked_define_find(list_name, node_name, node_type, identifier, compare_value) \
+    struct node_name *identifier##_linked_find(struct list_name *list, node_type value) { \
+        struct node_name *search = list->head;                                            \
+                                                                                          \
+        while(search != NULL) {                                                           \
+            if(compare_value(search->value, value) == 0) {                                \
+                search = search->next;                                                    \
+                                                                                          \
+                continue;                                                                 \
+            }                                                                             \
+                                                                                          \
+            break;                                                                        \
+        }                                                                                 \
+                                                                                          \
+        return search;                                                                    \
+    }
+
 #endif
