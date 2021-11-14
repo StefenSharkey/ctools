@@ -41,6 +41,23 @@
         free(list);                                         \
     }
 
+#define ct_linked_define_append(list_name, node_name, node_type, identifier)                  \
+    struct node_name *identifier##_linked_append(struct list_name *list, node_type value) {   \
+        struct node_name *new_node = (struct node_name*) calloc(1, sizeof(struct node_name)); \
+        new_node->value = value;                                                              \
+                                                                                              \
+        if(list->head == NULL) {                                                              \
+            list->head = new_node;                                                            \
+            list->tail = new_node;                                                            \
+        } else {                                                                              \
+            list->tail->next = new_node;                                                      \
+            list->tail = list->tail->next;                                                    \
+        }                                                                                     \
+                                                                                              \
+        return new_node;                                                                      \
+    }
+
+
 #define ct_linked_define_insert(list_name, node_name, node_type, identifier)                                                                                                             \
     struct node_name *identifier##_linked_insert(struct list_name *list, struct node_name *node, node_type value) {                                                                      \
         struct node_name *new_node = NULL;                                                                                                                                               \
@@ -56,6 +73,7 @@
         }                                                                                                                                                                                \
                                                                                                                                                                                          \
         new_node = (struct node_name*) calloc(1, sizeof(struct node_name));                                                                                                              \
+        new_node->value = value;                                                                                                                                                         \
         new_node->next = node;                                                                                                                                                           \
         previous->next = new_node;                                                                                                                                                       \
                                                                                                                                                                                          \

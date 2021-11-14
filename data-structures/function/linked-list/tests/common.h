@@ -2,6 +2,7 @@
 #define CT_LINKED_COMMON_H
 
 #include <assert.h>
+#include <string.h>
 
 #include "../linked-list.h"
 
@@ -14,5 +15,6 @@ ct_linked_define_list(StringList, StringNode);
 static ct_linked_define_init(StringList, string_list)
 static ct_linked_define_free(StringList, StringNode, string_list, free_string)
 static ct_linked_define_insert(StringList, StringNode, char*, string_list)
+static ct_linked_define_append(StringList, StringNode, char*, string_list)
 
 #endif
