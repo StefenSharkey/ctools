@@ -5,6 +5,7 @@
 #ifndef CT_LINKED_H
 #define CT_LINKED_H
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #define ct_linked_define_node(node_name, node_type) \
@@ -38,6 +39,31 @@
         }                                                   \
                                                             \
         free(list);                                         \
+    }
+
+#define ct_linked_define_insert(list_name, node_name, node_type, identifier)                                                                                                             \
+    struct node_name *identifier##_linked_insert(struct list_name *list, struct node_name *node, node_type value) {                                                                      \
+        struct node_name *new_node = NULL;                                                                                                                                               \
+        struct node_name *previous = list->head;                                                                                                                                         \
+                                                                                                                                                                                         \
+        while(previous != NULL && previous->next != node && previous != list->head) {                                                                                                    \
+            previous = previous->next;                                                                                                                                                   \
+        }                                                                                                                                                                                \
+                                                                                                                                                                                         \
+        if(previous == NULL) {                                                                                                                                                           \
+            fprintf(stderr, #identifier "_linked_insert: Attempt to insert value into node that is not in the provided linked list (list: %p, node: %p)\n", (void*) list, (void*) node); \
+            exit(1);                                                                                                                                                                     \
+        }                                                                                                                                                                                \
+                                                                                                                                                                                         \
+        new_node = (struct node_name*) calloc(1, sizeof(struct node_name));                                                                                                              \
+        new_node->next = node;                                                                                                                                                           \
+        previous->next = new_node;                                                                                                                                                       \
+                                                                                                                                                                                         \
+        if(previous == list->head) {                                                                                                                                                     \
+            list->head = new_node;                                                                                                                                                       \
+        }                                                                                                                                                                                \
+                                                                                                                                                                                         \
+        return new_node;                                                                                                                                                                 \
     }
 
 #endif
