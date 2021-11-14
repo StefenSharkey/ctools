@@ -16,5 +16,6 @@ static ct_linked_define_init(StringList, string_list)
 static ct_linked_define_free(StringList, StringNode, string_list, free_string)
 static ct_linked_define_insert(StringList, StringNode, char*, string_list)
 static ct_linked_define_append(StringList, StringNode, char*, string_list)
+static ct_linked_define_remove(StringList, StringNode, string_list, free_string)
 
 #endif

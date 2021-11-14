@@ -59,7 +59,6 @@
         return new_node;                                                                      \
     }
 
-
 #define ct_linked_define_insert(list_name, node_name, node_type, identifier)                                                                                                             \
     struct node_name *identifier##_linked_insert(struct list_name *list, struct node_name *node, node_type value) {                                                                      \
         struct node_name *new_node = NULL;                                                                                                                                               \
@@ -86,6 +85,47 @@
         }                                                                                                                                                                                \
                                                                                                                                                                                          \
         return new_node;                                                                                                                                                                 \
+    }
+
+#define ct_linked_define_remove(list_name, node_name, identifier, free_value)                                                                                                 \
+    void identifier##_linked_remove(struct list_name *list, struct node_name *node) {                                                                                         \
+        struct node_name *previous = list->head;                                                                                                                              \
+                                                                                                                                                                              \
+        if(node == list->head) {                                                                                                                                              \
+            free_value(list->head->value);                                                                                                                                    \
+            list->head = list->head->next;                                                                                                                                    \
+            free(previous);                                                                                                                                                   \
+            list->length--;                                                                                                                                                   \
+                                                                                                                                                                              \
+            if(list->length == 0) {                                                                                                                                           \
+                list->head = NULL;                                                                                                                                            \
+                list->tail = NULL;                                                                                                                                            \
+            }                                                                                                                                                                 \
+                                                                                                                                                                              \
+            return;                                                                                                                                                           \
+        }                                                                                                                                                                     \
+                                                                                                                                                                              \
+        while(previous != NULL && previous->next != node) {                                                                                                                   \
+            previous = previous->next;                                                                                                                                        \
+        }                                                                                                                                                                     \
+                                                                                                                                                                              \
+        if(previous == NULL) {                                                                                                                                                \
+            fprintf(stderr, #identifier "_linked_remove: Attempt to remove node that is not in the provided linked list (list: %p, node: %p)\n", (void*) list, (void*) node); \
+            exit(1);                                                                                                                                                          \
+        }                                                                                                                                                                     \
+                                                                                                                                                                              \
+        free_value(list->tail->value);                                                                                                                                        \
+        previous->next = node->next;                                                                                                                                          \
+        list->length--;                                                                                                                                                       \
+                                                                                                                                                                              \
+        if(node == list->tail) {                                                                                                                                              \
+            list->tail = previous;                                                                                                                                            \
+        }                                                                                                                                                                     \
+                                                                                                                                                                              \
+        if(list->length == 0) {                                                                                                                                               \
+            list->head = NULL;                                                                                                                                                \
+            list->tail = NULL;                                                                                                                                                \
+        }                                                                                                                                                                     \
     }
 
 #endif
