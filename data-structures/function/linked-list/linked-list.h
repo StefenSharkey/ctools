@@ -54,6 +54,8 @@
             list->tail = list->tail->next;                                                    \
         }                                                                                     \
                                                                                               \
+        list->length++;                                                                       \
+                                                                                              \
         return new_node;                                                                      \
     }
 
@@ -63,7 +65,7 @@
         struct node_name *new_node = NULL;                                                                                                                                               \
         struct node_name *previous = list->head;                                                                                                                                         \
                                                                                                                                                                                          \
-        while(previous != NULL && previous->next != node && previous != list->head) {                                                                                                    \
+        while(previous != NULL && previous->next != node && node != list->head) {                                                                                                        \
             previous = previous->next;                                                                                                                                                   \
         }                                                                                                                                                                                \
                                                                                                                                                                                          \
@@ -75,10 +77,12 @@
         new_node = (struct node_name*) calloc(1, sizeof(struct node_name));                                                                                                              \
         new_node->value = value;                                                                                                                                                         \
         new_node->next = node;                                                                                                                                                           \
-        previous->next = new_node;                                                                                                                                                       \
+        list->length++;                                                                                                                                                                  \
                                                                                                                                                                                          \
         if(previous == list->head) {                                                                                                                                                     \
             list->head = new_node;                                                                                                                                                       \
+        } else {                                                                                                                                                                         \
+            previous->next = new_node;                                                                                                                                                   \
         }                                                                                                                                                                                \
                                                                                                                                                                                          \
         return new_node;                                                                                                                                                                 \
