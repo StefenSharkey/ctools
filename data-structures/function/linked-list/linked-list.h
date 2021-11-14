@@ -25,4 +25,19 @@
         return (struct list_name*) calloc(1, sizeof(struct list_name)); \
     }
 
+#define ct_linked_define_free(list_name, node_name, identifier, free_value) \
+    void identifier##_linked_free(struct list_name *list) { \
+        struct node_name *node = list->head;                \
+                                                            \
+        while(node != NULL) {                               \
+            struct node_name *temp = node;                  \
+                                                            \
+            free_value(node->value);                        \
+            node = node->next;                              \
+            free(temp);                                     \
+        }                                                   \
+                                                            \
+        free(list);                                         \
+    }
+
 #endif
