@@ -7,6 +7,3 @@
 #include "node-array.h"
 
 ct_array_define_append(JSONNodeArray, struct JSONNode, json_node)
-
-int main() {
-}
