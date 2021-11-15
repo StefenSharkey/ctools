@@ -31,12 +31,16 @@
     }
 
 #define ct_stack_define_free(stack_name, node_name, identifier, free_value) \
-    void identifier##_stack_free(struct stack_name *stack) {
-        struct node_name *next = stack->top;
-
-        while(next != NULL) {
-            
-        }
+    void identifier##_stack_free(struct stack_name *stack) {                \
+        struct node_name *node = stack->top;                                \
+                                                                            \
+        while(node != NULL) {                                               \
+            struct node_name *next = node->next;                            \
+                                                                            \
+            free_value(node->value);                                        \
+            free(node);                                                     \
+            node = next;                                                    \
+        }                                                                   \
     }
 
 #endif
