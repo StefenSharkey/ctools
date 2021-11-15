@@ -11,7 +11,9 @@
 #include "data-structures/node-array.h"
 
 struct JSONNode *ct_json_parse_value(FILE *stream) {
-    struct JSONNode *node = 
+    struct JSONNode *node = ct_json_node_init();
+
+    return node;
 }
 
 struct JSONNode *ct_json_parse_dictionary(FILE *stream) {
