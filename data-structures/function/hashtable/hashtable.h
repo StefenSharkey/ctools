@@ -30,6 +30,10 @@
         value_type value;                                             \
     }
 
+#define CT_HASHTABLE_UNFILLED   0
+#define CT_HASHTABLE_FILLED     1
+#define CT_HASHTABLE_TOMBSTONE  2
+
 #define ct_hashtable_define_hashtable(hashtable_name, bucket_name) \
     struct hashtable_name {                                        \
         unsigned int logical_size;                                 \
@@ -52,7 +56,7 @@
         size_t index = 0;                                                           \
                                                                                     \
         for(index = 0; index < hashtable->physical_size; index++) {                 \
-            if(hashtable->buckets[index].state != 2) {                              \
+            if(hashtable->buckets[index].state != CT_HASHTABLE_FILLED) {            \
                 continue;                                                           \
             }                                                                       \
                                                                                     \
@@ -62,6 +66,76 @@
                                                                                     \
         free(hashtable->buckets);                                                   \
         free(hashtable);                                                            \
+    }
+
+#define ct_hashtable_define_assign(hashtable_name, bucket_name, key_type, value_type, identifier, hash, free_value, compare) \
+    void identifier##_hashtable_assign(struct hashtable_name *hashtable, key_type key, value_type value) {                   \
+        long key_hash = 0;                                                                                                   \
+                                                                                                                             \
+        if(((double) hashtable->logical_size) / ((double) hashtable->physical_size) >= CT_HASHTABLE_LOAD_THRESHOLD) {        \
+            size_t index = 0;                                                                                                \
+            unsigned int next_size = CT_HASHTABLE_GROWTH_FACTOR(hashtable->physical_size);                                   \
+            struct bucket_name *new_buckets = (struct bucket_name*) calloc(next_size, sizeof(struct bucket_name));           \
+                                                                                                                             \
+            /* Add each old bucket into the new bucket array */                                                              \
+            for(index = 0; index < hashtable->physical_size; index++) {                                                      \
+                long temporary_hash = hash(hashtable->buckets[index].key) % next_size;                                       \
+                                                                                                                             \
+                if(hashtable->buckets[index].state != CT_HASHTABLE_FILLED) {                                                 \
+                    continue;                                                                                                \
+                }                                                                                                            \
+                                                                                                                             \
+                /* Search the new buckets array for a new spot */                                                            \
+                while(1) {                                                                                                   \
+                    struct bucket_name new_bucket = new_buckets[temporary_hash];                                             \
+                                                                                                                             \
+                    if(new_bucket.state == CT_HASHTABLE_UNFILLED) {                                                          \
+                        break;                                                                                               \
+                    }                                                                                                        \
+                                                                                                                             \
+                    if(compare(new_bucket.key, hashtable->buckets[index].key) == 1) {                                        \
+                        break;                                                                                               \
+                    }                                                                                                        \
+                                                                                                                             \
+                    temporary_hash = ((temporary_hash + 1) % next_size);                                                     \
+                }                                                                                                            \
+                                                                                                                             \
+                new_buckets[temporary_hash].key = hashtable->buckets[index].key;                                             \
+                new_buckets[temporary_hash].value = hashtable->buckets[index].value;                                         \
+                new_buckets[temporary_hash].value = CT_HASHTABLE_FILLED;                                                     \
+            }                                                                                                                \
+                                                                                                                             \
+            free(hashtable->buckets);                                                                                        \
+            hashtable->physical_size = next_size;                                                                            \
+            hashtable->buckets = new_buckets;                                                                                \
+        }                                                                                                                    \
+                                                                                                                             \
+        key_hash = (long) hash(key) % hashtable->physical_size;                                                              \
+                                                                                                                             \
+        /* Search the buckets array for a spot to put the new key value pair in */                                           \
+        while(1) {                                                                                                           \
+            struct bucket_name bucket = hashtable->buckets[key_hash];                                                        \
+                                                                                                                             \
+            if(bucket.state == CT_HASHTABLE_UNFILLED) {                                                                      \
+                break;                                                                                                       \
+            }                                                                                                                \
+                                                                                                                             \
+            if(compare(bucket.key, key) == 1) {                                                                              \
+                break;                                                                                                       \
+            }                                                                                                                \
+                                                                                                                             \
+            key_hash = ((key_hash + 1) % hashtable->physical_size);                                                          \
+        }                                                                                                                    \
+                                                                                                                             \
+        if(hashtable->buckets[key_hash].state == CT_HASHTABLE_TOMBSTONE) {                                                   \
+            free_value(hashtable->buckets[key_hash].value);                                                                  \
+        } else {                                                                                                             \
+            hashtable->logical_size++;                                                                                       \
+        }                                                                                                                    \
+                                                                                                                             \
+        hashtable->buckets[key_hash].key = key;                                                                              \
+        hashtable->buckets[key_hash].value = value;                                                                          \
+        hashtable->buckets[key_hash].state = CT_HASHTABLE_FILLED;                                                            \
     }
 
 #endif
