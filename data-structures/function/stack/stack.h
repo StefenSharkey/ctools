@@ -77,6 +77,10 @@
         stack->top = next;                                                                                           \
         stack->length--;                                                                                             \
                                                                                                                      \
+        if(stack->length == 0) {                                                                                     \
+            stack->top = NULL;                                                                                       \
+        }                                                                                                            \
+                                                                                                                     \
         return temp;                                                                                                 \
     }
 
