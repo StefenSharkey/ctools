@@ -20,6 +20,8 @@ void ct_json_error(const char *format, ...) {
     va_start(specifiers, format);
     vfprintf(stderr, format, specifiers);
     va_end(specifiers);
+
+    exit(EXIT_FAILURE);
 }
 
 char *ct_json_str_type(struct JSONNode *node) {

@@ -28,7 +28,6 @@ int main(int argc, char *argv[]) {
     struct JSONKey *root = ct_json_parse(stdin);
 
     ctstring_print(root->key);
-    ctstring_print(root->next->key);
     ctstring_print(root->value->data.key->key);
     ctstring_print(root->value->data.key->next->key);
 }

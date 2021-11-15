@@ -54,7 +54,7 @@ struct JSONKey *ct_json_parse_dictionary(FILE *stream) {
 
         /* Keys must have a : after */
         if(character != ':') {
-            ct_json_error("ERROR: missing : after key\n");
+            ct_json_error("%s", "ERROR: missing : after key\n");
         }
 
         ct_json_ignore_whitespace(stream);
@@ -72,10 +72,24 @@ struct JSONKey *ct_json_parse_dictionary(FILE *stream) {
 struct JSONNodeArray *ct_json_parse_array(FILE *stream) {
     char character = (char) fgetc(stream);
     struct JSONNodeArray *new_array = json_node_array_init();
-    int node_delimited = 0;
 
     while(character != EOF && character != ']') {
+        ct_json_ignore_whitespace(stream);
         json_node_array_append(new_array, ct_json_parse_value(stream));
+
+        ct_json_ignore_whitespace(stream);
+        character = (char) fgetc(stream);
+
+        /* If the next character after whitespace is another token, rather
+         * than a comma or closing square bracket, then that means that this
+         * is invalid syntax. */
+        if(character == ']' || character == ',') {
+            continue;
+        }
+
+        ct_json_error("%s", "ERROR: malformed json. missing , in list\n");
+
+        break;
     }
 
 
