@@ -41,4 +41,22 @@
         free(queue);                                                        \
     }
 
+#define ct_queue_define_enqueue(queue_name, node_name, value_type, identifier)                 \
+    struct node_name *identifier##_queue_enqueue(struct queue_name *queue, value_type value) { \
+        struct node_name *new_node = (struct node_name*) calloc(1, sizeof(struct node_name));  \
+                                                                                               \
+        if(queue->front == NULL) {                                                             \
+            queue->front = new_node;                                                           \
+            queue->back = new_node;                                                            \
+        } else {                                                                               \
+            queue->back->next = new_node;                                                      \
+            queue->back = new_node;                                                            \
+        }                                                                                      \
+                                                                                               \
+        new_node->value = value;                                                               \
+        queue->length++;                                                                       \
+                                                                                               \
+        return new_node;                                                                       \
+    }
+
 #endif
