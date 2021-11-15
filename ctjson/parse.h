@@ -47,9 +47,16 @@ char ct_json_ignore_whitespace(FILE *stream);
 /*
  * Initialize a new JSON node.
  *
- * @return: a new JSON node.
+ * @return: a new JSON node
 */
 struct JSONNode *ct_json_node_init();
+
+/*
+ * Initialize a new JSON key.
+ *
+ * @return: a new JSON key
+*/
+struct JSONKey *ct_json_key_init();
 
 /*
  * Display a formatted error message to the stderr.

@@ -12,6 +12,10 @@ struct JSONNode *ct_json_node_init() {
     return (struct JSONNode*) calloc(1, sizeof(struct JSONNode));
 }
 
+struct JSONKey *ct_json_key_init() {
+    return (struct JSONKey*) calloc(1, sizeof(struct JSONKey));
+}
+
 void ct_json_error(const char *format, ...) {
     va_list specifiers = {0};
 
