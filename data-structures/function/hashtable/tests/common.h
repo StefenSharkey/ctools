@@ -16,7 +16,7 @@ static void free_int(int x) {
 }
 
 static long hash_string(const char *string) {
-    long hash = 5031;
+    long hash = 0;
 
     while(*string != '\0') {
         hash += *string;    
@@ -27,7 +27,7 @@ static long hash_string(const char *string) {
 }
 
 static int compare_string(const char *a, const char *b) {
-    return strcmp(a, b);
+    return strcmp(a, b) == 0;
 }
 
 ct_hashtable_define_bucket(StringIntBucket, char*, int);
