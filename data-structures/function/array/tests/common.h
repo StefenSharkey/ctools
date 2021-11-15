@@ -15,5 +15,6 @@ static ct_array_define_init(StringArray, char*, string)
 static ct_array_define_free(StringArray, string, free_string)
 static ct_array_define_insert(StringArray, char*, string)
 static ct_array_define_append(StringArray, char*, string)
+static ct_array_define_pop(StringArray, char*, string, free_string)
 
 #endif
