@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* Overload-able default size */
 #ifndef CT_ARRAY_PHYSICAL_SIZE
@@ -45,6 +46,25 @@
         }                                                        \
                                                                  \
         free(array);                                             \
+    }
+
+#define ct_array_define_insert(array_name, array_type, identifier)                                                                                      \
+    struct array_name *identifier##_array_insert(struct array_name* array, array_type value, unsigned int index) {                                      \
+        if(index < 0 || index > array->logical_size) {                                                                                                  \
+            fprintf(stderr, #identifier "_array_insert: attempt to insert outside the bounds of array (array: %p, index: %i)\n", (void*) array, index); \
+            exit(EXIT_FAILURE);                                                                                                                         \
+        }                                                                                                                                               \
+                                                                                                                                                        \
+        if(array->logical_size == array->physical_size) {                                                                                               \
+            array->physical_size = CT_ARRAY_GROWTH_FACTOR(array->physical_size);                                                                        \
+            array->contents = (array_type*) realloc(array->contents, sizeof(array_type) * array->physical_size);                                        \
+        }                                                                                                                                               \
+                                                                                                                                                        \
+        memmove(array->contents + (index + 1), array->contents + index, sizeof(array_type) * (array->logical_size - index));                            \
+        array->contents[index] = value;                                                                                                                 \
+        array->logical_size++;                                                                                                                          \
+                                                                                                                                                        \
+        return array;                                                                                                                                   \
     }
 
 #endif
