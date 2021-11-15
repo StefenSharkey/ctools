@@ -6,6 +6,7 @@
 
 #include "parse.h"
 #include "data-structures/ctstring.h"
+#include "data-structures/node-array.h"
 
 struct JSONNode *ct_json_parse_value(FILE *stream) {
     char character = (char) fgetc(stream);
@@ -68,4 +69,15 @@ struct JSONKey *ct_json_parse_dictionary(FILE *stream) {
     return head;
 }
 
-struct JSONNodeArray *
+struct JSONNodeArray *ct_json_parse_array(FILE *stream) {
+    char character = (char) fgetc(stream);
+    struct JSONNodeArray *new_array = json_node_array_init();
+    int node_delimited = 0;
+
+    while(character != EOF && character != ']') {
+        json_node_array_append(new_array, ct_json_parse_value(stream));
+    }
+
+
+    return new_array;
+}

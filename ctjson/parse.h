@@ -12,7 +12,7 @@ enum JSONType {
 
 struct JSONNode {
     enum JSONType type;
-    union data {
+    union {
         int integer;
         struct CtString *string;
         struct JSONNodeArray *array;

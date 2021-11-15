@@ -9,7 +9,7 @@ struct JSONNode;
 struct JSONNodeArray {
     unsigned int logical_size;
     unsigned int physical_size;
-    struct JSONNode* contents;
+    struct JSONNode** contents;
 };
 
 /*
@@ -18,7 +18,7 @@ struct JSONNodeArray {
  * @param array: the array to append to
  * @param value: the node to append
 */
-struct JSONNodeArray *json_node_array_append(struct JSONNodeArray *array, struct JSONNode value);
+struct JSONNodeArray *json_node_array_append(struct JSONNodeArray *array, struct JSONNode* value);
 
 /*
  * Initialize a new node array.
