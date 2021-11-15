@@ -26,4 +26,19 @@
         return (struct queue_name*) calloc(1, sizeof(struct queue_name)); \
     }
 
+#define ct_queue_define_free(queue_name, node_name, identifier, free_value) \
+    void identifier##_queue_free(struct queue_name *queue) {                \
+        struct node_name *previous = queue->front;                          \
+                                                                            \
+        while(previous != NULL) {                                           \
+            struct node_name* next = previous->next;                        \
+                                                                            \
+            free_value(previous->value);                                    \
+            free(previous);                                                 \
+            previous = next;                                                \
+        }                                                                   \
+                                                                            \
+        free(queue);                                                        \
+    }
+
 #endif
