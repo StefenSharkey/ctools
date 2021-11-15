@@ -8,5 +8,5 @@ int main() {
     assert(ct_stack_is_empty(stack) == 1);
     assert(stack->top == NULL);
 
-
+    string_stack_free(stack);
 }
