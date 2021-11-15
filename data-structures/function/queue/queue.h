@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 #define ct_queue_is_empty(queue) \
-    ((queue)->length == 0);
+    ((queue)->length == 0)
 
 #define ct_queue_define_node(node_name, node_type) \
     struct node_name {                             \

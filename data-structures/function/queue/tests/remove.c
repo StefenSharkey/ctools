@@ -9,6 +9,8 @@ int main() {
     string_queue_enqueue(queue, "tuna");
     string_queue_enqueue(queue, "spam");
 
+    assert(ct_queue_is_empty(queue) == 0);
+
     assert(strcmp(string_queue_dequeue(queue), "foo") == 0);
     assert(strcmp(queue->front->value, "bar") == 0);
     assert(queue->front != NULL);
@@ -37,6 +39,8 @@ int main() {
     assert(queue->front == NULL);
     assert(queue->back == NULL);
     assert(queue->length == 0);
+
+    assert(ct_queue_is_empty(queue) == 1);
 
 
     string_queue_free(queue);
