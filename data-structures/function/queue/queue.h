@@ -15,7 +15,7 @@
     ((queue)->length)
 
 #define ct_queue_peek(queue) \
-    ((queue)->top)
+    ((queue)->front)
 
 #define ct_queue_define_node(node_name, node_type) \
     struct node_name {                             \

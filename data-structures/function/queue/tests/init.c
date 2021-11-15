@@ -3,6 +3,7 @@
 int main() {
     struct StringQueue *queue = string_queue_init();    
 
+    assert(ct_queue_peek(queue) == NULL);
     assert(queue->front == NULL);
     assert(queue->back == NULL);
     assert(ct_queue_length(queue) == 0);

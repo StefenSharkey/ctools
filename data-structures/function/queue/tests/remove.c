@@ -48,7 +48,7 @@ int main() {
     assert(ct_queue_length(queue) == 0);
 
     assert(ct_queue_is_empty(queue) == 1);
-
+    assert(ct_queue_peek(queue) == NULL);
 
     string_queue_free(queue);
 }
