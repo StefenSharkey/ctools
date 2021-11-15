@@ -161,23 +161,48 @@
         return hashtable->buckets[key_hash].value;                                                       \
     }
 
-#define ct_hashtable_define_contains(hashtable_name, key_type, identifier, hash, compare)                \
-    int identifier##_hashtable_contains(struct hashtable_name *hashtable, key_type key) {                \
-        long key_hash = hash(key) % hashtable->physical_size;                                            \
-                                                                                                         \
-        while(1) {                                                                                       \
-            if(hashtable->buckets[key_hash].state == CT_HASHTABLE_UNFILLED) {                            \
-                return 0;                                                                                \
-            }                                                                                            \
-                                                                                                         \
-            if(compare(hashtable->buckets[key_hash].key, key) == 1) {                                    \
-                break;                                                                                   \
-            }                                                                                            \
-                                                                                                         \
-            key_hash = ((key_hash + 1) % hashtable->physical_size);                                      \
-        }                                                                                                \
-                                                                                                         \
-        return 1;                                                                                        \
+#define ct_hashtable_define_contains(hashtable_name, key_type, identifier, hash, compare) \
+    int identifier##_hashtable_contains(struct hashtable_name *hashtable, key_type key) { \
+        long key_hash = hash(key) % hashtable->physical_size;                             \
+                                                                                          \
+        while(1) {                                                                        \
+            if(hashtable->buckets[key_hash].state == CT_HASHTABLE_UNFILLED) {             \
+                return 0;                                                                 \
+            }                                                                             \
+                                                                                          \
+            if(compare(hashtable->buckets[key_hash].key, key) == 1) {                     \
+                break;                                                                    \
+            }                                                                             \
+                                                                                          \
+            key_hash = ((key_hash + 1) % hashtable->physical_size);                       \
+        }                                                                                 \
+                                                                                          \
+        return 1;                                                                         \
+    }
+
+#define ct_hashtable_define_delete(hashtable_name, key_type, identifier, hash, compare, free_key, free_value) \
+    void identifier##_hashtable_delete(struct hashtable_name *hashtable, key_type key) {                      \
+        long key_hash = hash(key) % hashtable->physical_size;                                                 \
+                                                                                                              \
+        while(1) {                                                                                            \
+            if(hashtable->buckets[key_hash].state == CT_HASHTABLE_UNFILLED) {                                 \
+                fprintf(stderr, "%s", #identifier "_hashtable_delete: attempt to delete invalid key\n");      \
+                exit(EXIT_FAILURE);                                                                           \
+            }                                                                                                 \
+                                                                                                              \
+            if(compare(hashtable->buckets[key_hash].key, key) == 1) {                                         \
+                break;                                                                                        \
+            }                                                                                                 \
+                                                                                                              \
+            key_hash = ((key_hash + 1) % hashtable->physical_size);                                           \
+        }                                                                                                     \
+                                                                                                              \
+        free_key(hashtable->buckets[key_hash].key);                                                           \
+        free_value(hashtable->buckets[key_hash].value);                                                       \
+        hashtable->buckets[key_hash].state = CT_HASHTABLE_TOMBSTONE;                                          \
+        hashtable->logical_size--;                                                                            \
+                                                                                                              \
+        return 1;                                                                                             \
     }
 
 #endif

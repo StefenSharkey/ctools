@@ -6,6 +6,8 @@ int main() {
     string_int_hashtable_assign(hashtable, "foo", 1);
     string_int_hashtable_assign(hashtable, "bar", 2);
     string_int_hashtable_assign(hashtable, "tuna", 3);
+    string_int_hashtable_assign(hashtable, "eop", 1);
+    string_int_hashtable_assign(hashtable, "doq", 1);
 
     /* Lookups */
     assert(string_int_hashtable_lookup(hashtable, "foo") == 1);
