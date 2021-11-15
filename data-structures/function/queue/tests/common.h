@@ -15,5 +15,6 @@ ct_queue_define_queue(StringQueue, StringNode);
 static ct_queue_define_init(StringQueue, StringNode, string)
 static ct_queue_define_free(StringQueue, StringNode, string, free_string)
 static ct_queue_define_enqueue(StringQueue, StringNode, char*, string)
+static ct_queue_define_dequeue(StringQueue, StringNode, char*, string)
 
 #endif

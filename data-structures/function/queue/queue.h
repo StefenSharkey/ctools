@@ -59,4 +59,27 @@
         return new_node;                                                                       \
     }
 
+#define ct_queue_define_dequeue(queue_name, node_name, value_type, identifier)                                               \
+    value_type identifier##_queue_dequeue(struct queue_name *queue) {                                                        \
+        value_type temp = {0};                                                                                               \
+        struct node_name *front = queue->front;                                                                              \
+                                                                                                                             \
+        if(queue->front == NULL) {                                                                                           \
+            fprintf(stderr, #identifier "_queue_dequeue: attempt to dequeue from empty queue (queue: %p)\n", (void*) queue); \
+            exit(EXIT_FAILURE);                                                                                              \
+        }                                                                                                                    \
+                                                                                                                             \
+        temp = queue->front->value;                                                                                          \
+        queue->length--;                                                                                                     \
+        queue->front = front->next;                                                                                          \
+                                                                                                                             \
+        if(queue->front == NULL) {                                                                                           \
+            queue->back = NULL;                                                                                              \
+        }                                                                                                                    \
+                                                                                                                             \
+        free(front);                                                                                                         \
+                                                                                                                             \
+        return temp;                                                                                                         \
+    }
+
 #endif
