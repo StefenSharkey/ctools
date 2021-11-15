@@ -161,4 +161,23 @@
         return hashtable->buckets[key_hash].value;                                                       \
     }
 
+#define ct_hashtable_define_contains(hashtable_name, key_type, identifier, hash, compare)                \
+    int identifier##_hashtable_contains(struct hashtable_name *hashtable, key_type key) {                \
+        long key_hash = hash(key) % hashtable->physical_size;                                            \
+                                                                                                         \
+        while(1) {                                                                                       \
+            if(hashtable->buckets[key_hash].state == CT_HASHTABLE_UNFILLED) {                            \
+                return 0;                                                                                \
+            }                                                                                            \
+                                                                                                         \
+            if(compare(hashtable->buckets[key_hash].key, key) == 1) {                                    \
+                break;                                                                                   \
+            }                                                                                            \
+                                                                                                         \
+            key_hash = ((key_hash + 1) % hashtable->physical_size);                                      \
+        }                                                                                                \
+                                                                                                         \
+        return 1;                                                                                        \
+    }
+
 #endif
