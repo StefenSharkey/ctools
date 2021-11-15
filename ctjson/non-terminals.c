@@ -21,6 +21,7 @@ struct JSONNode *ct_json_parse_value(FILE *stream) {
         case '[': /* Array */
             node->data.array = ct_json_parse_array(stream);
             node->type = CT_JSON_ARRAY;
+
             break;
         case '"': /* String */
             node->data.string = ct_json_parse_string(stream);
@@ -66,3 +67,5 @@ struct JSONKey *ct_json_parse_dictionary(FILE *stream) {
 
     return head;
 }
+
+struct JSONNodeArray *
