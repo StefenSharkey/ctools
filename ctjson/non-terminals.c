@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "parse.h"
+#include "data-structures/ctstring.h"
 
 struct JSONNode *ct_json_parse_value(FILE *stream) {
     char character = (char) fgetc(stream);
@@ -12,7 +13,16 @@ struct JSONNode *ct_json_parse_value(FILE *stream) {
 
     /* Determine what kind of terminal to parse based off the first character */
     switch(character) {
-        case '{': ct_json_parse_dictionary(stream);
+        case '{': /* Dictionary */
+            node->data.key = ct_json_parse_dictionary(stream);
+            node->type = CT_JSON_KEY;
+
+            break;
+        case '"': /* String */
+            node->data.string = ct_json_parse_string(stream);
+            node->type = CT_JSON_STRING;
+
+            break;
     }
     
 
@@ -47,6 +57,7 @@ struct JSONKey *ct_json_parse_dictionary(FILE *stream) {
         /* Add a new key into the chain */
         last_key->next = ct_json_key_init();
         last_key = last_key->next;
+
     }
 
     return head;

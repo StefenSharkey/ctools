@@ -66,6 +66,14 @@ struct JSONKey *ct_json_key_init();
 void ct_json_error(const char *format, ...);
 
 /*
+ * Retrieve the string representation of a JSON type.
+ *
+ * @param node: the node to get the type of
+ * @return: the type of the node
+*/
+char *ct_json_str_type(struct JSONNode *node);
+
+/*
  * Parse a generic 'value' from the file STREAM, and return a node
  * representing that value.
  *
