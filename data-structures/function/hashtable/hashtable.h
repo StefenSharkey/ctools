@@ -5,6 +5,7 @@
 #ifndef CT_HASHTABLE_H
 #define CT_HASHTABLE_H
 
+#include <stdio.h>
 #include <stdlib.h>
 
 /* Overload-able default size */
@@ -138,6 +139,26 @@
         hashtable->buckets[key_hash].key = key;                                                                              \
         hashtable->buckets[key_hash].value = value;                                                                          \
         hashtable->buckets[key_hash].state = CT_HASHTABLE_FILLED;                                                            \
+    }
+
+#define ct_hashtable_define_lookup(hashtable_name, key_type, value_type, identifier, hash, compare)      \
+    value_type identifier##_hashtable_lookup(struct hashtable_name *hashtable, key_type key) {           \
+        long key_hash = hash(key) % hashtable->physical_size;                                            \
+                                                                                                         \
+        while(1) {                                                                                       \
+            if(hashtable->buckets[key_hash].state == CT_HASHTABLE_UNFILLED) {                            \
+                fprintf(stderr, "%s", #identifier "_hashtable_lookup: attempt to lookup invalid key\n"); \
+                exit(EXIT_FAILURE);                                                                      \
+            }                                                                                            \
+                                                                                                         \
+            if(compare(hashtable->buckets[key_hash].key, key) == 1) {                                    \
+                break;                                                                                   \
+            }                                                                                            \
+                                                                                                         \
+            key_hash = ((key_hash + 1) % hashtable->physical_size);                                      \
+        }                                                                                                \
+                                                                                                         \
+        return hashtable->buckets[key_hash].value;                                                       \
     }
 
 #endif

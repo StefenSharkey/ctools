@@ -35,5 +35,6 @@ ct_hashtable_define_hashtable(StringIntTable, StringIntBucket);
 static ct_hashtable_define_init(StringIntTable, StringIntBucket, string_int)
 static ct_hashtable_define_free(StringIntTable, string_int, free_string, free_int)
 static ct_hashtable_define_assign(StringIntTable, StringIntBucket, char*, int, string_int, hash_string, free_int, compare_string)
+static ct_hashtable_define_lookup(StringIntTable, char*, int, string_int, hash_string, compare_string)
 
 #endif
