@@ -67,4 +67,17 @@
         return array;                                                                                                                                   \
     }
 
+#define ct_array_define_append(array_name, array_type, identifier)                                               \
+    struct array_name *identifier##_array_append(struct array_name* array, array_type value) {                   \
+        if(array->logical_size == array->physical_size) {                                                        \
+            array->physical_size = CT_ARRAY_GROWTH_FACTOR(array->physical_size);                                 \
+            array->contents = (array_type*) realloc(array->contents, sizeof(array_type) * array->physical_size); \
+        }                                                                                                        \
+                                                                                                                 \
+        array->contents[array->logical_size] = value;                                                            \
+        array->logical_size++;                                                                                   \
+                                                                                                                 \
+        return array;                                                                                            \
+    }
+
 #endif
