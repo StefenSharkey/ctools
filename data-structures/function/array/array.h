@@ -107,6 +107,20 @@
         return array;                                                                                                            \
     }
 
+#define ct_array_define_find(array_name, array_type, identifier, compare)       \
+    int identifier##_array_find(struct array_name* array, array_type value) {   \
+        int index = 0;                                                          \
+                                                                                \
+        for(index = 0; index < array->logical_size; index++) {                  \
+            if(compare(array->contents[index], value) == 0) {                   \
+                continue;                                                       \
+            }                                                                   \
+                                                                                \
+            return index;                                                       \
+        }                                                                       \
+                                                                                \
+        return -1;                                                              \
+    }
 
 #define ct_array_define_append(array_name, array_type, identifier)                                               \
     struct array_name *identifier##_array_append(struct array_name* array, array_type value) {                   \
