@@ -8,7 +8,6 @@
 
 ct_stack_define_node(StringNode, char*);
 ct_stack_define_stack(StringStack, StringNode);
-
-
+static ct_stack_define_init(StringStack, StringNode, string)
 
 #endif
