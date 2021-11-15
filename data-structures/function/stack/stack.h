@@ -43,4 +43,21 @@
         }                                                                   \
     }
 
+#define ct_stack_define_push(stack_name, node_name, value_type, identifier)                   \
+    struct stack_name *identifier##_stack_push(struct stack_name *stack, value_type value) {  \
+        struct node_name *new_node = (struct node_name*) calloc(1, sizeof(struct node_name)); \
+                                                                                              \
+        stack->length++;                                                                      \
+        new_node->value = value;                                                              \
+                                                                                              \
+        if(stack->top == NULL) {                                                              \
+            stack->top = new_node;                                                            \
+        } else {                                                                              \
+            new_node->next = stack->top;                                                      \
+            stack->top = new_node;                                                            \
+        }                                                                                     \
+                                                                                              \
+        return stack;                                                                         \
+    }
+
 #endif
