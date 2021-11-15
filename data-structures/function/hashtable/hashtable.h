@@ -5,6 +5,8 @@
 #ifndef CT_HASHTABLE_H
 #define CT_HASHTABLE_H
 
+#include <stdlib.h>
+
 /* Overload-able default size */
 #ifndef CT_HASHTABLE_PHYSICAL_SIZE
 #define CT_HASHTABLE_PHYSICAL_SIZE 10
@@ -43,6 +45,23 @@
         new_hashtable->buckets = (struct bucket_name*) calloc(CT_HASHTABLE_PHYSICAL_SIZE, sizeof(struct bucket_name)); \
                                                                                                                        \
         return new_hashtable;                                                                                          \
+    }
+
+#define ct_hashtable_define_free(hashtable_name, identifier, free_key, free_value) \
+    void identifier##_hashtable_free(struct hashtable_name *hashtable) {           \
+        size_t index = 0;                                                           \
+                                                                                    \
+        for(index = 0; index < hashtable->physical_size; index++) {                 \
+            if(hashtable->buckets[index].state != 2) {                              \
+                continue;                                                           \
+            }                                                                       \
+                                                                                    \
+            free_key(hashtable->buckets[index].key);                                \
+            free_value(hashtable->buckets[index].value);                            \
+        }                                                                           \
+                                                                                    \
+        free(hashtable->buckets);                                                   \
+        free(hashtable);                                                            \
     }
 
 #endif
