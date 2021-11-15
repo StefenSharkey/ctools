@@ -25,7 +25,7 @@ void ct_json_error(const char *format, ...) {
 char *ct_json_str_type(struct JSONNode *node) {
     switch(node->type) {
         case CT_JSON_INT: return "INTEGER";
-        case CT_JSON_LIST: return "LIST";
+        case CT_JSON_ARRAY: return "ARRAY";
         case CT_JSON_STRING: return "STRING";
         case CT_JSON_KEY: return "KEY";
     }

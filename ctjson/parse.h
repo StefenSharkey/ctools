@@ -6,7 +6,7 @@ struct FILE;
 enum JSONType {
     CT_JSON_INT,
     CT_JSON_KEY,
-    CT_JSON_LIST,
+    CT_JSON_ARRAY,
     CT_JSON_STRING
 };
 
@@ -99,7 +99,7 @@ struct JSONKey *ct_json_parse_dictionary(FILE *stream);
  * @param stream: the stream to parse from
  * @return: a new list
 */
-struct JSONNodeArray *ct_json_parse_list(FILE *stream);
+struct JSONNodeArray *ct_json_parse_array(FILE *stream);
 
 
 
