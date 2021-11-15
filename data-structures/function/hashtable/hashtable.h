@@ -21,7 +21,7 @@
 /* Overload-able equation for changing the size */
 #ifndef CT_HASHTABLE_GROWTH_FACTOR
 #define CT_HASHTABLE_GROWTH_FACTOR(current_size) \
-    current_size * 2
+    ((current_size) * 2)
 #endif
 
 #define ct_hashtable_define_bucket(bucket_name, key_type, value_type) \
