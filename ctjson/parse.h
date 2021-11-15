@@ -36,6 +36,15 @@ struct JSONKey {
 struct CtString *ct_json_parse_string(FILE *stream);
 
 /*
+ * Parses forward in a file STREAM until a non-whitespace character
+ * is met.
+ *
+ * @param stream: the file to parse
+ * @return: the first non-whitespace character
+*/
+char ct_json_ignore_whitespace(FILE *stream);
+
+/*
  * Initialize a new JSON node.
  *
  * @return: a new JSON node.

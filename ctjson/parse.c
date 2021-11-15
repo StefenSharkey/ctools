@@ -18,7 +18,7 @@ struct JSONNode *ct_json_parse_value(FILE *stream) {
 
 struct JSONNode *ct_json_parse_dictionary(FILE *stream) {
     char character = -1;
-    struct JSONNode *node = NULL;
+    struct JSONNode *node = ct_json_node_init();
 
     /* Keep parsing keys and values until a closing brace is found */
     while((character = (char) fgetc(stream)) != '}') {
@@ -35,8 +35,9 @@ struct JSONNode *ct_json_parse_dictionary(FILE *stream) {
             ct_json_error("ERROR: missing : after key");
         }
 
-    }
+        
 
+    }
 
     return node;
 }

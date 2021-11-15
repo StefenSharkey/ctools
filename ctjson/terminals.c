@@ -18,3 +18,13 @@ struct CtString *ct_json_parse_string(FILE *stream) {
 
     return new_string;
 }
+
+char ct_json_ignore_whitespace(FILE *stream) {
+    char character = (char) fgetc(stream);
+
+    while(character < 33 || character == 127) {
+        character = (char) fgetc(stream);
+    }
+
+    return character;
+}
