@@ -92,4 +92,24 @@ struct JSONNode *ct_json_parse_value(FILE *stream);
 */
 struct JSONKey *ct_json_parse_dictionary(FILE *stream);
 
+/*
+ * Parses a list from the file STREAM and return a list of nodes
+ * which contain each element of the list.
+ *
+ * @param stream: the stream to parse from
+ * @return: a new list
+*/
+struct JSONNodeArray *ct_json_parse_list(FILE *stream);
+
+
+
+
+
+
+
+
+
+
+
+
 #endif

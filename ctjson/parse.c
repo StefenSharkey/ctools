@@ -13,9 +13,13 @@
 struct JSONKey *ct_json_parse(FILE *stream) {
     char character = (char) fgetc(stream);
 
+    ct_json_ignore_whitespace(stream);
+
     if(character != '{') {
         return NULL;
     }
+
+    ct_json_ignore_whitespace(stream);
 
     return ct_json_parse_dictionary(stream);
 }
@@ -25,5 +29,6 @@ int main(int argc, char *argv[]) {
 
     ctstring_print(root->key);
     ctstring_print(root->next->key);
-    ctstring_print(root->next->next->key);
+    ctstring_print(root->value->data.key->key);
+    ctstring_print(root->value->data.key->next->key);
 }
