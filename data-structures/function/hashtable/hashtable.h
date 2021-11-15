@@ -5,8 +5,20 @@
 #ifndef CT_HASHTABLE_H
 #define CT_HASHTABLE_H
 
+/* Overload-able default size */
 #ifndef CT_HASHTABLE_PHYSICAL_SIZE
 #define CT_HASHTABLE_PHYSICAL_SIZE 10
+#endif
+
+/* Overload-able load threshold */
+#ifndef CT_HASHTABLE_LOAD_THRESHOLD
+#define CT_HASHTABLE_LOAD_THRESHOLD 0.8f
+#endif
+
+/* Overload-able equation for changing the size */
+#ifndef CT_HASHTABLE_GROWTH_FACTOR
+#define CT_HASHTABLE_GROWTH_FACTOR(current_size) \
+    current_size * 0.3f
 #endif
 
 #define ct_hashtable_define_bucket(bucket_name, key_type, value_type) \
