@@ -36,4 +36,15 @@
         return new_array;                                                                         \
     }
 
+#define ct_array_define_free(array_name, identifier, free_value) \
+    void identifier##_array_free(struct array_name *array) {     \
+        unsigned int index = 0;                                  \
+                                                                 \
+        for(index = 0; index < array->logical_size; index++) {   \
+            free_value(array->contents[index]);                  \
+        }                                                        \
+                                                                 \
+        free(array);                                             \
+    }
+
 #endif
