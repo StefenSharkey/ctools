@@ -67,18 +67,44 @@
         return array;                                                                                                                                   \
     }
 
-#define ct_array_define_pop(array_name, array_type, identifier, free_value)                                                                       \
-    struct array_name *identifier##_array_pop(struct array_name* array, array_type value, unsigned int index) {                                   \
+#define ct_array_define_pop(array_name, array_type, identifier)                                                                                   \
+    array_type identifier##_array_pop(struct array_name* array, unsigned int index) {                                                             \
+        array_type temp = {0};                                                                                                                    \
+                                                                                                                                                  \
         if(index < 0 || index >= array->logical_size) {                                                                                           \
             fprintf(stderr, #identifier "_array_pop: attempt to pop outside the bounds of array (array: %p, index: %i)\n", (void*) array, index); \
             exit(EXIT_FAILURE);                                                                                                                   \
         }                                                                                                                                         \
                                                                                                                                                   \
-        free_value(array->contents[index]);                                                                                                       \
+        temp = array->contents[index];                                                                                                            \
         memmove(array->contents + index, array->contents + index + 1, sizeof(array_type) * (array->logical_size - index));                        \
         array->logical_size--;                                                                                                                    \
                                                                                                                                                   \
-        return array;                                                                                                                             \
+        return temp;                                                                                                                              \
+    }
+
+#define ct_array_define_remove(array_name, array_type, identifier, compare, free_value)                                         \
+    array_type identifier##_array_pop(struct array_name* array, array_type value) {                                             \
+        unsigned int index = 0;                                                                                                 \
+                                                                                                                                \
+        for(index = 0; index < array->logical_size; index++) {                                                                  \
+            if(compare(array->contents[index], value) == 0) {                                                                   \
+                continue;                                                                                                       \
+            }                                                                                                                   \
+                                                                                                                                \
+            break;                                                                                                              \
+        }                                                                                                                       \
+                                                                                                                                \
+        if(index >= array->logical_size) {                                                                                      \
+            fprintf(stderr, #identifier "_array_remove: attempt to remove value not inside array(array: %p)\n", (void*) array); \
+            exit(EXIT_FAILURE);                                                                                                 \
+        }                                                                                                                       \
+                                                                                                                                \
+        free_value(array->contents[index]);                                                                                     \
+        memmove(array->contents + index, array->contents + index + 1, sizeof(array_type) * (array->logical_size - index));      \
+        array->logical_size--;                                                                                                  \
+                                                                                                                                \
+        return array;                                                                                                           \
     }
 
 
