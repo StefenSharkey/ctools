@@ -2,6 +2,10 @@
  * Parsers for non-terminal data structures like lists and dictionaries.
 */
 
+#include <stdio.h>
+
+#include "parse.h"
+
 struct JSONNode *ct_json_parse_value(FILE *stream) {
     char character = (char) fgetc(stream);
     struct JSONNode *node = ct_json_node_init();

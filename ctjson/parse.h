@@ -65,4 +65,23 @@ struct JSONKey *ct_json_key_init();
 */
 void ct_json_error(const char *format, ...);
 
+/*
+ * Parse a generic 'value' from the file STREAM, and return a node
+ * representing that value.
+ *
+ * @param stream: the stream to parse from
+ * @return: a node representing the key
+*/
+struct JSONNode *ct_json_parse_value(FILE *stream);
+
+/*
+ * Parse a string key from the file STREAM, and return a key object
+ * that contains the first key in a chain of keys, each having an
+ * assigned value.
+ *
+ * @param stream: the stream to parse from
+ * @return: the key representing a key value pair
+*/
+struct JSONKey *ct_json_parse_dictionary(FILE *stream);
+
 #endif
