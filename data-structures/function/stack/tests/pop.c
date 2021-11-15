@@ -9,6 +9,8 @@ int main() {
     string_stack_push(stack, "tuna");
     string_stack_push(stack, "spam");
 
+    assert(strcmp(ct_stack_peek(stack)->value, "spam") == 0);
+
     assert(ct_stack_is_empty(stack) == 0);
     assert(ct_stack_length(stack) == 5);
 
@@ -34,6 +36,7 @@ int main() {
     
     assert(ct_stack_is_empty(stack) == 1);
     assert(ct_stack_length(stack) == 0);
+    assert(ct_stack_peek(stack) == NULL);
 
     string_stack_free(stack);
 }

@@ -14,6 +14,9 @@
 #define ct_stack_length(stack) \
     ((stack)->length)
 
+#define ct_stack_peek(stack) \
+    ((stack)->top)
+
 #define ct_stack_define_node(node_name, node_type) \
     struct node_name {                             \
         node_type value;                           \
