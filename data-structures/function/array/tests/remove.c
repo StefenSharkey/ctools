@@ -12,7 +12,7 @@ int main() {
     assert(strcmp(string_array_pop(array, 0), "foo") == 0);
     assert(array->logical_size == 3);
 
-    assert(strcmp(string_array_pop(array, 2), "baz") == 0);
+    assert(strcmp(string_array_pop(array, 2), "tuna") == 0);
     assert(array->logical_size == 2);
 
     string_array_free(array);

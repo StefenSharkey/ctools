@@ -84,7 +84,7 @@
     }
 
 #define ct_array_define_remove(array_name, array_type, identifier, compare, free_value)                                         \
-    array_type identifier##_array_pop(struct array_name* array, array_type value) {                                             \
+    struct array_name *identifier##_array_remove(struct array_name* array, array_type value) {                                  \
         unsigned int index = 0;                                                                                                 \
                                                                                                                                 \
         for(index = 0; index < array->logical_size; index++) {                                                                  \
