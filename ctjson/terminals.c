@@ -26,5 +26,7 @@ char ct_json_ignore_whitespace(FILE *stream) {
         character = (char) fgetc(stream);
     }
 
+    ungetc(character, stream);
+
     return character;
 }

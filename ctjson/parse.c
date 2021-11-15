@@ -16,13 +16,10 @@ struct JSONNode *ct_json_parse_value(FILE *stream) {
     return node;
 }
 
-struct JSONNode *ct_json_parse_dictionary(FILE *stream) {
+struct JSONKey *ct_json_parse_dictionary(FILE *stream) {
     char character = -1;
-    struct JSONNode *node = ct_json_node_init();
-
-    node->type = CT_JSON_KEY;
-    node->data = ct_json
-
+    struct JSONKey *last_key = ct_json_key_init();
+    struct JSONKey *head = last_key;
 
     /* Keep parsing keys and values until a closing brace is found */
     while((character = (char) fgetc(stream)) != '}') {
@@ -31,7 +28,7 @@ struct JSONNode *ct_json_parse_dictionary(FILE *stream) {
         }
 
         /* Parse a key */
-        ct_json_parse_string(stream);
+        last_key->key = ct_json_parse_string(stream);
         character = (char) fgetc(stream);
 
         ct_json_ignore_whitespace(stream);
@@ -42,12 +39,12 @@ struct JSONNode *ct_json_parse_dictionary(FILE *stream) {
         }
 
         ct_json_ignore_whitespace(stream);
+        last_key->value = ct_json_parse_value(stream);
 
-        
-
+        /* Add a new key into the chain */
     }
 
-    return node;
+    return head;
 }
 
 struct JSONNode *ct_json_parse(FILE *stream) {

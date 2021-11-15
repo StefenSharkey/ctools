@@ -21,7 +21,7 @@ struct JSONNode {
 };
 
 struct JSONKey {
-    char *key;
+    struct CtString *key;
     struct JSONNode *value;
     struct JSONKey *next;
 };
