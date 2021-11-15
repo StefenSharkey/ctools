@@ -15,5 +15,6 @@ ct_stack_define_stack(StringStack, StringNode);
 static ct_stack_define_init(StringStack, StringNode, string)
 static ct_stack_define_free(StringStack, StringNode, string, free_string)
 static ct_stack_define_push(StringStack, StringNode, char*, string)
+static ct_stack_define_pop(StringStack, StringNode, char*, string)
 
 #endif

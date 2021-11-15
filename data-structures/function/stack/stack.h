@@ -5,6 +5,7 @@
 #ifndef CT_STACK_H
 #define CT_STACK_H
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #define ct_stack_is_empty(stack) \
@@ -58,6 +59,25 @@
         }                                                                                     \
                                                                                               \
         return stack;                                                                         \
+    }
+
+#define ct_stack_define_pop(stack_name, node_name, value_type, identifier)                                           \
+    value_type identifier##_stack_pop(struct stack_name *stack) {                                                    \
+        value_type temp = {0};                                                                                       \
+        struct node_name *next = NULL;                                                                               \
+                                                                                                                     \
+        if(stack->top == NULL) {                                                                                     \
+            fprintf(stderr, #identifier "_stack_pop: attempt to pop from empty stack (stack: %p)\n", (void*) stack); \
+            exit(EXIT_FAILURE);                                                                                      \
+        }                                                                                                            \
+                                                                                                                     \
+        temp = stack->top->value;                                                                                    \
+        next = stack->top->next;                                                                                     \
+        free(stack->top);                                                                                            \
+        stack->top = next;                                                                                           \
+        stack->length--;                                                                                             \
+                                                                                                                     \
+        return temp;                                                                                                 \
     }
 
 #endif
