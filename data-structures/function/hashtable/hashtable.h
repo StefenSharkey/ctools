@@ -14,13 +14,13 @@
 
 /* Overload-able load threshold */
 #ifndef CT_HASHTABLE_LOAD_THRESHOLD
-#define CT_HASHTABLE_LOAD_THRESHOLD 0.8f
+#define CT_HASHTABLE_LOAD_THRESHOLD 0.8
 #endif
 
 /* Overload-able equation for changing the size */
 #ifndef CT_HASHTABLE_GROWTH_FACTOR
 #define CT_HASHTABLE_GROWTH_FACTOR(current_size) \
-    current_size * 0.3f
+    current_size * 2
 #endif
 
 #define ct_hashtable_define_bucket(bucket_name, key_type, value_type) \
@@ -79,11 +79,13 @@
                                                                                                                              \
             /* Add each old bucket into the new bucket array */                                                              \
             for(index = 0; index < hashtable->physical_size; index++) {                                                      \
-                long temporary_hash = hash(hashtable->buckets[index].key) % next_size;                                       \
+                long temporary_hash = 0;                                                                                     \
                                                                                                                              \
                 if(hashtable->buckets[index].state != CT_HASHTABLE_FILLED) {                                                 \
                     continue;                                                                                                \
                 }                                                                                                            \
+                                                                                                                             \
+                temporary_hash = hash(hashtable->buckets[index].key) % next_size;                                            \
                                                                                                                              \
                 /* Search the new buckets array for a new spot */                                                            \
                 while(1) {                                                                                                   \
@@ -102,7 +104,7 @@
                                                                                                                              \
                 new_buckets[temporary_hash].key = hashtable->buckets[index].key;                                             \
                 new_buckets[temporary_hash].value = hashtable->buckets[index].value;                                         \
-                new_buckets[temporary_hash].value = CT_HASHTABLE_FILLED;                                                     \
+                new_buckets[temporary_hash].state = CT_HASHTABLE_FILLED;                                                     \
             }                                                                                                                \
                                                                                                                              \
             free(hashtable->buckets);                                                                                        \
@@ -127,7 +129,7 @@
             key_hash = ((key_hash + 1) % hashtable->physical_size);                                                          \
         }                                                                                                                    \
                                                                                                                              \
-        if(hashtable->buckets[key_hash].state == CT_HASHTABLE_TOMBSTONE) {                                                   \
+        if(hashtable->buckets[key_hash].state == CT_HASHTABLE_FILLED) {                                                      \
             free_value(hashtable->buckets[key_hash].value);                                                                  \
         } else {                                                                                                             \
             hashtable->logical_size++;                                                                                       \
