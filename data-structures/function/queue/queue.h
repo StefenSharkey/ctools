@@ -34,14 +34,14 @@
 
 #define ct_queue_define_free(queue_name, node_name, identifier, free_value) \
     void identifier##_queue_free(struct queue_name *queue) {                \
-        struct node_name *previous = queue->front;                          \
+        struct node_name *next = queue->front;                              \
                                                                             \
-        while(previous != NULL) {                                           \
-            struct node_name* next = previous->next;                        \
+        while(next != NULL) {                                               \
+            struct node_name* next = next->next;                            \
                                                                             \
-            free_value(previous->value);                                    \
-            free(previous);                                                 \
-            previous = next;                                                \
+            free_value(next->value);                                        \
+            free(next);                                                     \
+            next = next;                                                    \
         }                                                                   \
                                                                             \
         free(queue);                                                        \
