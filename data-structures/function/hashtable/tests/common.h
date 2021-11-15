@@ -37,5 +37,6 @@ static ct_hashtable_define_free(StringIntTable, string_int, free_string, free_in
 static ct_hashtable_define_assign(StringIntTable, StringIntBucket, char*, int, string_int, hash_string, free_int, compare_string)
 static ct_hashtable_define_lookup(StringIntTable, char*, int, string_int, hash_string, compare_string)
 static ct_hashtable_define_contains(StringIntTable, char*, string_int, hash_string, compare_string)
+static ct_hashtable_define_delete(StringIntTable, char*, string_int, hash_string, compare_string, free_string, free_int)
 
 #endif

@@ -151,7 +151,8 @@
                 exit(EXIT_FAILURE);                                                                      \
             }                                                                                            \
                                                                                                          \
-            if(compare(hashtable->buckets[key_hash].key, key) == 1) {                                    \
+            if(hashtable->buckets[key_hash].state == CT_HASHTABLE_FILLED &&                              \
+               compare(hashtable->buckets[key_hash].key, key) == 1) {                                    \
                 break;                                                                                   \
             }                                                                                            \
                                                                                                          \
@@ -170,7 +171,8 @@
                 return 0;                                                                 \
             }                                                                             \
                                                                                           \
-            if(compare(hashtable->buckets[key_hash].key, key) == 1) {                     \
+            if(hashtable->buckets[key_hash].state == CT_HASHTABLE_FILLED &&               \
+               compare(hashtable->buckets[key_hash].key, key) == 1) {                     \
                 break;                                                                    \
             }                                                                             \
                                                                                           \
@@ -201,8 +203,6 @@
         free_value(hashtable->buckets[key_hash].value);                                                       \
         hashtable->buckets[key_hash].state = CT_HASHTABLE_TOMBSTONE;                                          \
         hashtable->logical_size--;                                                                            \
-                                                                                                              \
-        return 1;                                                                                             \
     }
 
 #endif
