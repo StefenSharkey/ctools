@@ -27,7 +27,5 @@ int main() {
     assert(string_int_hashtable_contains(hashtable, "eop") == 0);
     assert(string_int_hashtable_contains(hashtable, "doq") == 0);
 
-
-
     string_int_hashtable_free(hashtable);
 }
