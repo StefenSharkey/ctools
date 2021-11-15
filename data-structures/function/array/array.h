@@ -26,4 +26,14 @@
         array_type *contents;                         \
     }
 
+#define ct_array_define_init(array_name, array_type, identifier)                                  \
+    struct array_name *identifier##_array_init() {                                                \
+        struct array_name *new_array = (struct array_name*) calloc(1, sizeof(struct array_name)); \
+                                                                                                  \
+        new_array->contents = (array_type*) calloc(CT_ARRAY_PHYSICAL_SIZE, sizeof(array_type));   \
+        new_array->physical_size = CT_ARRAY_PHYSICAL_SIZE;                                        \
+                                                                                                  \
+        return new_array;                                                                         \
+    }
+
 #endif
